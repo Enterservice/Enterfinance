@@ -763,6 +763,248 @@ footer{background:var(--navy-3);color:rgba(255,255,255,.5);padding:56px 7vw;bord
   </div>
 </footer>
 
+<!-- ===== MODAL RICHIEDI CONSULENZA ===== -->
+<div class="ef-modal-overlay" id="efModal" aria-hidden="true">
+  <div class="ef-modal" role="dialog" aria-modal="true" aria-labelledby="efModalTitle">
+    <button class="ef-modal-close" id="efModalClose" aria-label="Chiudi">&times;</button>
+    <h2 id="efModalTitle">Richiedi una consulenza</h2>
+    <p class="ef-modal-sub">Compila il modulo: ti ricontattiamo entro 24-48h. Prima consulenza sempre gratuita.</p>
+
+    <form id="efForm" novalidate>
+      <div class="ef-grid">
+        <div class="ef-field">
+          <label>Nome <span>*</span></label>
+          <input name="nome" required maxlength="80" autocomplete="given-name">
+        </div>
+        <div class="ef-field">
+          <label>Cognome <span>*</span></label>
+          <input name="cognome" required maxlength="80" autocomplete="family-name">
+        </div>
+        <div class="ef-field">
+          <label>Email <span>*</span></label>
+          <input type="email" name="email" required autocomplete="email">
+        </div>
+        <div class="ef-field">
+          <label>Telefono</label>
+          <input type="tel" name="telefono" maxlength="30" autocomplete="tel" placeholder="+39 …">
+        </div>
+        <div class="ef-field ef-full">
+          <label>Tipo di richiesta <span>*</span></label>
+          <select name="tipo_prodotto_interesse" required>
+            <option value="">— Seleziona —</option>
+            <optgroup label="Mutui">
+              <option value="mutuo_acquisto_prima_casa">Mutuo · Acquisto prima casa</option>
+              <option value="mutuo_acquisto_seconda_casa">Mutuo · Acquisto seconda casa</option>
+              <option value="mutuo_ristrutturazione">Mutuo · Ristrutturazione</option>
+              <option value="mutuo_surroga">Mutuo · Surroga</option>
+              <option value="mutuo_consolidamento_debiti">Mutuo · Consolidamento</option>
+              <option value="mutuo_liquidita">Mutuo · Liquidità</option>
+            </optgroup>
+            <optgroup label="Cessione del quinto / Prestiti">
+              <option value="cessione_quinto_stipendio">Cessione del quinto stipendio</option>
+              <option value="cessione_quinto_pensione">Cessione del quinto pensione</option>
+              <option value="prestito_personale">Prestito personale</option>
+              <option value="prestito_consolidamento">Prestito consolidamento</option>
+            </optgroup>
+            <optgroup label="Imprese / Finanza Agevolata">
+              <option value="finanziamento_pmi">Finanziamento PMI</option>
+              <option value="microcredito">Microcredito</option>
+              <option value="finanza_agevolata_bando">Finanza Agevolata · Bandi / PNRR</option>
+            </optgroup>
+            <option value="altro">Non so ancora · Voglio una valutazione</option>
+          </select>
+        </div>
+        <div class="ef-field">
+          <label>Importo indicativo (€)</label>
+          <input type="number" name="importo_interesse_eur" min="0" step="1000" placeholder="es. 200000">
+        </div>
+        <div class="ef-field">
+          <label>Durata (mesi)</label>
+          <input type="number" name="durata_mesi" min="6" max="360" step="6" placeholder="es. 240">
+        </div>
+        <div class="ef-field ef-full">
+          <label>Messaggio</label>
+          <textarea name="messaggio" rows="2" maxlength="2000" placeholder="Descrivici brevemente la situazione (opzionale)"></textarea>
+        </div>
+      </div>
+
+      <div class="ef-consent">
+        <label class="ef-check">
+          <input type="checkbox" name="consenso_oam" required>
+          <span><strong>Consenso obbligatorio.</strong> Ho letto e accetto che la mia richiesta sarà gestita da <strong>PrestitoSì Finance S.p.A.</strong> (mediatore creditizio iscritto OAM M54) di cui Enterfinance è collaboratore, e autorizzo il trattamento dei dati personali per la finalità di richiesta finanziamento/consulenza.</span>
+        </label>
+        <label class="ef-check">
+          <input type="checkbox" name="consenso_marketing">
+          <span>Acconsento a ricevere comunicazioni commerciali da Enterfinance / PrestitoSì.</span>
+        </label>
+      </div>
+
+      <div id="efMsg" class="ef-msg" hidden></div>
+
+      <button type="submit" class="ef-submit">Invia richiesta</button>
+
+      <p class="ef-or">— oppure —</p>
+      <a href="https://enterserviceholding.com/prenota/marius-veronesi?source=enterfinance" target="_blank" rel="noopener" class="ef-calendar-link">
+        📅 Prenota direttamente una call sul calendario
+      </a>
+    </form>
+  </div>
+</div>
+
+<style>
+.ef-modal-overlay {
+  position: fixed; inset: 0; background: rgba(8,10,30,.7);
+  display: none; align-items: flex-start; justify-content: center;
+  z-index: 1000; padding: 24px 16px;
+  overflow-y: auto; backdrop-filter: blur(4px);
+}
+.ef-modal-overlay.open { display: flex; }
+.ef-modal {
+  background: #fff; color: #1a1d2e; max-width: 640px; width: 100%;
+  border-radius: 18px; padding: 32px 28px; position: relative;
+  box-shadow: 0 30px 60px rgba(0,0,0,.4);
+  margin-top: 24px;
+}
+.ef-modal-close {
+  position: absolute; top: 12px; right: 16px;
+  background: transparent; border: none; font-size: 28px;
+  cursor: pointer; color: #888; line-height: 1;
+}
+.ef-modal-close:hover { color: #1a1d2e; }
+.ef-modal h2 { font-size: 1.5rem; margin: 0 0 6px; color: #1a1d2e; }
+.ef-modal-sub { color: #666; font-size: .92rem; margin: 0 0 18px; line-height: 1.5; }
+.ef-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.ef-field { display: flex; flex-direction: column; gap: 5px; }
+.ef-full { grid-column: 1 / -1; }
+.ef-field label { font-size: .78rem; font-weight: 600; color: #1a1d2e; }
+.ef-field label span { color: #d32f2f; }
+.ef-field input, .ef-field select, .ef-field textarea {
+  padding: 9px 12px; border: 1.5px solid #d8d9e3; border-radius: 8px;
+  font: inherit; font-size: .94rem; background: #fff; color: #1a1d2e;
+}
+.ef-field input:focus, .ef-field select:focus, .ef-field textarea:focus {
+  outline: none; border-color: #1a1d2e;
+}
+.ef-consent { margin-top: 16px; padding-top: 14px; border-top: 1px solid #eee; }
+.ef-check { display: flex; gap: 9px; align-items: flex-start; margin-bottom: 10px; font-size: .85rem; line-height: 1.45; color: #555; }
+.ef-check input { margin-top: 3px; flex-shrink: 0; }
+.ef-check span strong { color: #1a1d2e; }
+.ef-msg { padding: 11px 14px; border-radius: 8px; margin-top: 12px; font-size: .9rem; }
+.ef-msg.error { background: #fde2e2; color: #7d1e1e; }
+.ef-msg.success { background: #d1fae5; color: #064e3b; }
+.ef-submit {
+  width: 100%; margin-top: 14px; padding: 12px 20px;
+  background: #1a1d2e; color: #fff; border: none; border-radius: 10px;
+  font: inherit; font-weight: 700; font-size: 1rem; cursor: pointer;
+}
+.ef-submit:hover:not(:disabled) { background: #2d3252; }
+.ef-submit:disabled { opacity: .55; cursor: not-allowed; }
+.ef-or { text-align: center; margin: 14px 0 10px; color: #999; font-size: .82rem; }
+.ef-calendar-link {
+  display: block; text-align: center; padding: 11px 18px;
+  background: #FFF7E0; color: #6b5400; border-radius: 9px;
+  text-decoration: none; font-weight: 600; font-size: .92rem;
+  border: 1px solid #f3d27a;
+}
+.ef-calendar-link:hover { background: #ffeebf; }
+@media (max-width: 560px) {
+  .ef-modal { padding: 24px 18px; }
+  .ef-grid { grid-template-columns: 1fr; }
+}
+</style>
+
+<script>
+// ===== Modal Richiedi Consulenza =====
+(function() {
+  const overlay = document.getElementById('efModal');
+  const form = document.getElementById('efForm');
+  const msg = document.getElementById('efMsg');
+  const closeBtn = document.getElementById('efModalClose');
+  const ENDPOINT = 'https://app.enterserviceholding.com/api/public/lead/enterfinance';
+  const CALENDAR_URL = 'https://enterserviceholding.com/prenota/marius-veronesi?source=enterfinance';
+
+  function open() {
+    overlay.classList.add('open');
+    overlay.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    // Focus primo input
+    setTimeout(() => form.querySelector('[name=nome]')?.focus(), 100);
+  }
+  function close() {
+    overlay.classList.remove('open');
+    overlay.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+
+  // Cattura UTM dalla URL
+  const urlParams = new URLSearchParams(location.search);
+  const utm = {
+    utm_source: urlParams.get('utm_source'),
+    utm_medium: urlParams.get('utm_medium'),
+    utm_campaign: urlParams.get('utm_campaign'),
+  };
+
+  // Intercetta TUTTI i link al calendario (CTA principali) → apri modal
+  document.addEventListener('click', (e) => {
+    const a = e.target.closest('a[href*="/prenota/marius-veronesi"]');
+    if (!a) return;
+    // Permetti il link "Prenota direttamente sul calendario" DENTRO la modal
+    if (a.classList.contains('ef-calendar-link')) return;
+    e.preventDefault();
+    open();
+  });
+
+  closeBtn.addEventListener('click', close);
+  overlay.addEventListener('click', (e) => { if (e.target === overlay) close(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && overlay.classList.contains('open')) close(); });
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    msg.hidden = true; msg.className = 'ef-msg';
+    const btn = form.querySelector('.ef-submit');
+    btn.disabled = true; const oldTxt = btn.textContent; btn.textContent = 'Invio in corso…';
+
+    const fd = new FormData(form);
+    const payload = {
+      nome: (fd.get('nome') || '').trim(),
+      cognome: (fd.get('cognome') || '').trim(),
+      email: (fd.get('email') || '').trim(),
+      telefono: (fd.get('telefono') || '').trim() || null,
+      tipo_prodotto_interesse: fd.get('tipo_prodotto_interesse'),
+      importo_interesse_eur: parseFloat(fd.get('importo_interesse_eur')) || null,
+      durata_mesi: parseInt(fd.get('durata_mesi'), 10) || null,
+      messaggio: (fd.get('messaggio') || '').trim() || null,
+      consenso_oam: fd.get('consenso_oam') === 'on',
+      consenso_marketing: fd.get('consenso_marketing') === 'on',
+      ...utm,
+    };
+
+    try {
+      const res = await fetch(ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      const data = await res.json();
+      if (!res.ok || !data.success) {
+        msg.hidden = false; msg.classList.add('error');
+        msg.textContent = '⚠️ ' + (data.message || data.error || 'Errore durante l\'invio. Riprova o scrivi a info@enterserviceholding.com');
+        btn.disabled = false; btn.textContent = oldTxt;
+        return;
+      }
+      // Success
+      form.style.display = 'none';
+      msg.hidden = false; msg.classList.add('success');
+      msg.innerHTML = '<strong>✅ Richiesta ricevuta!</strong><br>Un consulente del team Mediazione + Finanza Agevolata ti contatterà entro 24-48h. Riceverai a breve un\'email di conferma.<br><br><a href="' + CALENDAR_URL + '" target="_blank" rel="noopener" style="color:#1a1d2e;font-weight:600;">📅 Prenota anche una call sul calendario →</a>';
+    } catch (e) {
+      msg.hidden = false; msg.classList.add('error');
+      msg.textContent = '⚠️ Errore di rete. Riprova fra un istante.';
+      btn.disabled = false; btn.textContent = oldTxt;
+    }
+  });
+})();
+</script>
+
 <script>
 // ===== Scroll reveal =====
 const io = new IntersectionObserver((entries)=>{
